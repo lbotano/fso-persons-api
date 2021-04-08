@@ -1,0 +1,34 @@
+{
+    "name": "fso-persons-api",
+    "version": "1.0.0",
+    "description": "Rest API from the Fullstack Open 2021 course",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lbotano/fso-persons-api.git"
+    },
+    "keywords": [
+        "rest",
+        "api",
+        "node",
+        "express",
+        "fullstack-open"
+    ],
+    "author": "lbotano",
+    "bugs": {
+        "url": "https://github.com/lbotano/fso-persons-api/issues"
+    },
+    "homepage": "https://github.com/lbotano/fso-persons-api#readme",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    }
+}

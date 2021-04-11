@@ -1,6 +1,9 @@
+require("dotenv").config()
 const express = require("express")
 const cors = require("cors")
 const morgan = require("morgan")
+
+const Person = require("./models/person")
 
 const app = express()
 
@@ -40,24 +43,28 @@ const generateId = () => Math.floor(Math.random() * 10000)
 
 // Get API info
 app.get("/info", (request, response) => {
-    response.send(`
-        <p>Phonebook has info for ${persons.length} people</p>
-        <p>${new Date()}</p>
-    `)
+    Person.find({}).then(persons => {
+        response.send(`
+            <p>Phonebook has info for ${persons.length} people</p>
+            <p>${new Date()}</p>
+        `)
+    })
 })
 
 // List all persons
-app.get("/api/persons", (request, response) => response.json(persons))
+app.get("/api/persons", (request, response) => {
+    Person.find({}).then(persons => response.json(persons))
+})
 
 // Get info from person
 app.get("/api/persons/:id", (request, response) => {
-    const person = persons.find(person => person.id === Number(request.params.id))
-
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    Person.findById(request.params.id)
+        .then(person => {
+            response.json(person)
+        })
+        .catch(error => {
+            response.status(404).json({ error: "Person does not exist" })
+        })
 })
 
 // Delete person
@@ -91,18 +98,19 @@ app.post("/api/persons", (request, response) => {
         })
     }
 
-    const person = {
+    const person = new Person({
         id: generateId(),
         name: body.name,
         number: body.number
-    }
+    })
 
-    persons = persons.concat(person)
-
-    response.json(person)
+    person.save().then(savedPerson => {
+        console.log("person saved!")
+        response.json(savedPerson)
+    })
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })

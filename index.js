@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(cors())
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :postData"))
 
-morgan.token("postData", function (request, response) {
+morgan.token("postData", function (request) {
     return JSON.stringify(request.body)
 })
 
@@ -118,7 +118,7 @@ app.post("/api/persons", (request, response, next) => {
 
 // Modify person
 app.put("/api/persons/:id", (request, response, next) => {
-    const body = request.body;
+    const body = request.body
     console.log(request.body)
 
     if (!body.name) {
